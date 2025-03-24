@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My ChatGPT</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f2f2f2;
+    }
+    #chatbox {
+      width: 100%;
+      height: 300px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      overflow-y: scroll;
+      background: white;
+    }
+    textarea {
+      width: 100%;
+      height: 60px;
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Ask ChatGPT</h2>
+  <div id="chatbox"></div>
+  <textarea id="prompt" placeholder="Type your message..."></textarea>
+  <button onclick="sendPrompt()">Send</button>
+
+  <script>
+    async function sendPrompt() {
+      const prompt = document.getElementById('prompt').value;
+      const chatbox = document.getElementById('chatbox');
+      chatbox.innerHTML += `<div><b>You:</b> ${prompt}</div>`;
+
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ prompt })
+      });
+
+      if (!response.ok) {
+        chatbox.innerHTML += `<div><b>Error:</b> ${response.statusText}</div>`;
+        return;
+      }
+
+      const data = await response.json();
+      chatbox.innerHTML += `<div><b>ChatGPT:</b> ${data.reply}</div>`;
+      document.getElementById('prompt').value = "";
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
