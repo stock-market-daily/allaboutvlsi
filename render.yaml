@@ -1,10 +1,10 @@
 services:
-  - type: web
+   type: web
     name: chatgpt-backend
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: python server.py
     envVars:
-      - key: OPENAI_API_KEY
+       key: OPENAI_API_KEY
         value: "k-Z_O5tZV-_QoJEfPS-sBau0iwo_aMEH6e__e0BpezBmT3BlbkFJ5wJvchIJt3GLGkZb9T1SupAYs-nFkYBuXtZ8VTUUcA"
