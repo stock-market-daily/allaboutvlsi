@@ -1,10 +1,12 @@
 services:
   - type: web
-    name: all_about_vlsi
+    name: chatgpt-ui
     env: python
+    region: oregon
     plan: free
-    buildCommand: pip install -r requirements.txt
-    startCommand: python server.py
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
     envVars:
       - key: OPENAI_API_KEY
-        value: "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"
+        sync: false
+
