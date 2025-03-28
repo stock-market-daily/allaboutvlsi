@@ -7,4 +7,4 @@ services:
     startCommand: python server.py
     envVars:
       - key: OPENAI_API_KEY
-        value: "k-Z_O5tZV-_QoJEfPS-sBau0iwo_aMEH6e__e0BpezBmT3BlbkFJ5wJvchIJt3GLGkZb9T1SupAYs-nFkYBuXtZ8VTUUcA "
+        value: "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"
