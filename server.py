@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Get API key from environment variable
 openai.api_key = os.environ.get("OPENAI_API_KEY")
-
+port = int(os.environ.get("PORT", 5000))
 @app.route('/')
 def index():
     return send_from_directory('.', 'index.html')
@@ -32,4 +32,4 @@ def static_files(path):
     return send_from_directory('.', path)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=port,debug=True)
