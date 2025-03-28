@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: chatgpt-ui
+    name: all_about_vlsi
     env: python
     region: oregon
     plan: free
