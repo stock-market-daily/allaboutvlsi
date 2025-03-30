@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 # Load OpenAI API Key from environment variable
-openai.api_key = os.getenv("OPENAI_API_KEY")
+#openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # HTML Frontend with JavaScript
 HTML_TEMPLATE = """
@@ -61,8 +61,7 @@ HTML_TEMPLATE = """
 @app.route("/")
 def index():
     return render_template_string(HTML_TEMPLATE)
-#openai.api_key = "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"
-#openai.api_key = "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"
+openai.api_key="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"
 @app.route("/chat", methods=["POST"])
 def chat():
     try:
