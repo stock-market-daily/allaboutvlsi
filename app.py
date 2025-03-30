@@ -1,7 +1,7 @@
 from flask import Flask, render_template_string, request, jsonify
 import openai
 import os
-
+import logging
 app = Flask(__name__)
 
 # Load OpenAI API Key from environment variable
