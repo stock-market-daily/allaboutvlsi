@@ -80,9 +80,9 @@ def chat():
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}]
         )
-
-        return jsonify(response["choices"][0]["message"])
-
+        print(response.choices[0].message.content)
+        #return jsonify(response["choices"][0]["message"])
+        return jsonify({"message": response.choices[0].message.content})  # Ensure JSON format
     except openai.error.AuthenticationError:
         return jsonify({"error": "Invalid OpenAI API Key"}), 401
     except openai.error.RateLimitError:
