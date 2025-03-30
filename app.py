@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Load OpenAI API Key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
-
+print("KEY IS: "+openai.api_key)
 # HTML Frontend with JavaScript
 HTML_TEMPLATE = """
 <!DOCTYPE html>
@@ -57,6 +57,8 @@ HTML_TEMPLATE = """
 </body>
 </html>
 """
+logging.basicConfig(level=logging.INFO)
+logging.info(f"OpenAI version: {openai.__version__}")
 
 @app.route("/")
 def index():
