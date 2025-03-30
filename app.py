@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 # Load OpenAI API Key from environment variable
-#openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # HTML Frontend with JavaScript
 HTML_TEMPLATE = """
