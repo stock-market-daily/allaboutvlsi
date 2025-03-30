@@ -7,6 +7,9 @@ app = Flask(__name__)
 # Load OpenAI API Key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
 print("KEY IS: "+openai.api_key)
+openai.api_key = "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"
+print("KEY2 IS: "+openai.api_key)
+
 # HTML Frontend with JavaScript
 HTML_TEMPLATE = """
 <!DOCTYPE html>
