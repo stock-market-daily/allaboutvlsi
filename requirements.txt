@@ -1,5 +1,5 @@
 gunicorn
 flask
 requests
-openai>=1.2.0
+openai==1.13.3
 logging
