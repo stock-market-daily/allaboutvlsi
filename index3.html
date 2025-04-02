@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT with RapidAPI</title>
+</head>
+<body>
+    <h1>Chat with GPT</h1>
+    <input type="text" id="userPrompt" placeholder="Type your message">
+    <button onclick="sendPrompt()">Send</button>
+    <p id="response"></p>
+
+    <script>
+        function sendPrompt() {
+            const prompt = document.getElementById("userPrompt").value;
+            document.getElementById("response").innerHTML = "Generating response...";
+
+            fetch("https://openai-proxy-service.p.rapidapi.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-RapidAPI-Key": "YOUR_RAPIDAPI_KEY",  // 🔴 Replace this
+                    "X-RapidAPI-Host": "openai-proxy-service.p.rapidapi.com"
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [{ role: "user", content: prompt }]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById("response").innerHTML = "<b>Error:</b> " + data.error.message;
+                } else {
+                    document.getElementById("response").innerHTML = data.choices[0].message.content;
+                }
+            })
+            .catch(error => {
+                document.getElementById("response").innerHTML = "<b>Request failed:</b> " + error;
+            });
+        }
+    </script>
+</body>
+</html>
