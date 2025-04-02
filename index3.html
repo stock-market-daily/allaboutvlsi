@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatGPT with RapidAPI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/mode/javascript/javascript.min.js"></script>
+
 </head>
 <body>
     <h1>Chat with GPT</h1>
     <input type="text" id="userPrompt" placeholder="Type your message">
     <button onclick="sendPrompt()">Send</button>
     <p id="response"></p>
+<textarea id="chatResponse"></textarea>
 
     <script>
         function sendPrompt() {
@@ -34,6 +39,11 @@
                     document.getElementById("response").innerHTML = "<b>Error:</b> " + data.error.message;
                 } else {
                     document.getElementById("response").innerHTML = data.choices[0].message.content;
+                    var editor = CodeMirror.fromTextArea(document.getElementById("chatResponse"), {
+    mode: "javascript",  // Change to "json", "html", etc.
+    lineNumbers: true,
+    theme: "default"
+});
                 }
             })
             .catch(error => {
