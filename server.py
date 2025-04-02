@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 import openai
 import os
-
+'''
 app = Flask(__name__)
 
 # Get API key from environment variable
@@ -33,3 +33,4 @@ def static_files(path):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port,debug=True)
+'''
