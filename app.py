@@ -34,29 +34,45 @@ HTML_TEMPLATE = """
         <div class="output" id="response"></div>
     </div>
 
-    <script>
-        function sendPrompt() {
-            const prompt = document.getElementById("userPrompt").value;
-            document.getElementById("response").innerHTML = "Generating response...";
+   <script>
+    function sendPrompt() {
+        console.log("🔹 Function sendPrompt() called");
 
-            fetch("/chat", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ prompt: prompt })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    document.getElementById("response").innerHTML = "<b>Error:</b> " + data.error;
-                } else {
-                    document.getElementById("response").innerHTML = data.content;
-                }
-            })
-            .catch(error => {
-                document.getElementById("response").innerHTML = "<b>Request failed:</b> " + error;
-            });
-        }
-    </script>
+        const prompt = document.getElementById("userPrompt").value;
+        console.log("🔹 User prompt:", prompt);
+
+        document.getElementById("response").innerHTML = "Generating response...";
+        console.log("🔹 Updated response message");
+
+        fetch("/chat", {
+            method: "POST",
+            headers: { "Content-Type": "text/plain" }, // Sending raw text
+            body: prompt  // Sending raw data
+        })
+        .then(response => {
+            console.log("🔹 Fetch request sent, waiting for response...");
+            return response.json();
+        })
+        .then(data => {
+            console.log("🔹 Response received:", data);
+
+            if (data.error) {
+                document.getElementById("response").innerHTML = "<b>Error:</b> " + data.error;
+                console.log("🔴 Error received:", data.error);
+            } else {
+                document.getElementById("response").innerHTML = data.message;
+                console.log("🟢 Success! Chatbot response:", data.message);
+            }
+        })
+        .catch(error => {
+            console.error("🔴 Fetch error:", error);
+            document.getElementById("response").innerHTML = "<b>Request failed:</b> " + error;
+        });
+
+        console.log("🔹 Fetch request completed");
+    }
+</script>
+
 </body>
 </html>
 """
@@ -65,10 +81,12 @@ logging.info(f"OpenAI version: {openai.__version__}")
 
 @app.route("/")
 def index():
+    print("Inside index")
     return render_template_string(HTML_TEMPLATE)
 #openai.api_key="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"
 @app.route("/chat", methods=["POST"])
 def chat():
+    print("Inside chat")
     try:
         print("🔹 Received a request at /chat")
 
@@ -91,8 +109,8 @@ def chat():
         # Extract message content safely
         message_content = response.choices[0].message.content
         print(f"🔹 Chatbot response: {message_content}")
-
-        return jsonify({"message": message_content})  # Ensure JSON format
+        return message_content
+        #return jsonify({"message": message_content})  # Ensure JSON format
 
     except openai.error.AuthenticationError:
         print("🔴 OpenAI API Key is invalid!")
