@@ -16,15 +16,15 @@
             const prompt = document.getElementById("userPrompt").value;
             document.getElementById("response").innerHTML = "Generating response...";
 
-            fetch("https://openai-proxy-service.p.rapidapi.com/v1/chat/completions", {
+            fetch("https://chatgpt-best-price.p.rapidapi.com/v1/chat/completions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-RapidAPI-Key": "YOUR_RAPIDAPI_KEY",  // 🔴 Replace this
-                    "X-RapidAPI-Host": "openai-proxy-service.p.rapidapi.com"
+                    "X-RapidAPI-Key": "187d0016d6msh94eba804ff91d3fp1dd831jsnbca665e2eaf8",  // 🔴 Replace this
+                    "X-RapidAPI-Host": "chatgpt-best-price.p.rapidapi.com"
                 },
                 body: JSON.stringify({
-                    model: "gpt-3.5-turbo",
+                    model: "gpt-4o-mini",
                     messages: [{ role: "user", content: prompt }]
                 })
             })
