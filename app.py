@@ -70,29 +70,47 @@ def index():
 @app.route("/chat", methods=["POST"])
 def chat():
     try:
-        data = request.json
-        prompt = data.get("prompt", "")
+        print("🔹 Received a request at /chat")
 
+        data = request.json
+        print(f"🔹 Request data: {data}")
+
+        prompt = data.get("prompt", "")
         if not prompt:
+            print("🔸 No prompt provided")
             return jsonify({"error": "No prompt provided"}), 400
 
+        print(f"🔹 Sending prompt to OpenAI: {prompt}")
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}]
         )
-        print(response.choices[0].message.content)
-        return response.choices[0].message.content
-        #return jsonify(response["choices"][0]["message"])
-        #return jsonify({"message": response.choices[0].message.content})  # Ensure JSON format
+
+        print(f"🔹 OpenAI response: {response}")
+
+        # Extract message content safely
+        message_content = response.choices[0].message.content
+        print(f"🔹 Chatbot response: {message_content}")
+
+        return jsonify({"message": message_content})  # Ensure JSON format
+
     except openai.error.AuthenticationError:
+        print("🔴 OpenAI API Key is invalid!")
         return jsonify({"error": "Invalid OpenAI API Key"}), 401
     except openai.error.RateLimitError:
+        print("🔴 OpenAI Rate Limit Exceeded!")
         return jsonify({"error": "Rate limit exceeded"}), 429
+    except openai.error.APIError as e:
+        print(f"🔴 OpenAI API Error: {e}")
+        return jsonify({"error": "OpenAI API error", "details": str(e)}), 503
+    except openai.error.ServiceUnavailableError:
+        print("🔴 OpenAI Service is unavailable")
+        return jsonify({"error": "OpenAI Service is unavailable"}), 503
     except Exception as e:
+        print(f"🔴 Unexpected Error: {e}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    #app.run(debug=True, port=5000)
-
     port = int(os.environ.get("PORT", 9000))  # Render assigns a dynamic port
+    print(f"🚀 Starting Flask server on port {port}")
     app.run(host="0.0.0.0", port=port, debug=True)
