@@ -81,8 +81,9 @@ def chat():
             messages=[{"role": "user", "content": prompt}]
         )
         print(response.choices[0].message.content)
+        return response.choices[0].message.content
         #return jsonify(response["choices"][0]["message"])
-        return jsonify({"message": response.choices[0].message.content})  # Ensure JSON format
+        #return jsonify({"message": response.choices[0].message.content})  # Ensure JSON format
     except openai.error.AuthenticationError:
         return jsonify({"error": "Invalid OpenAI API Key"}), 401
     except openai.error.RateLimitError:
