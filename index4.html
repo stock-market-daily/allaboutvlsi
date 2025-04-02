@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT with RapidAPI</title>
+
+    <!-- CodeMirror Styles & Scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/mode/python/python.min.js"></script>
+
+</head>
+<body>
+    <h1>Chat with GPT</h1>
+    <input type="text" id="userPrompt" placeholder="Type your message">
+    <button onclick="sendPrompt()">Send</button>
+    <p id="response"></p>
+
+    <!-- Textarea for CodeMirror -->
+    <textarea id="chatResponse"></textarea>
+
+    <script>
+        // Initialize CodeMirror for Python formatting
+        var editor = CodeMirror.fromTextArea(document.getElementById("chatResponse"), {
+            mode: "python",
+            lineNumbers: true,
+            theme: "default",
+            readOnly: false
+        });
+
+        function sendPrompt() {
+            const prompt = document.getElementById("userPrompt").value;
+            document.getElementById("response").innerHTML = "Generating response...";
+
+            fetch("https://chatgpt-best-price.p.rapidapi.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-RapidAPI-Key": "",  // ✅ Use your own API key
+                    "X-RapidAPI-Host": "chatgpt-best-price.p.rapidapi.com"
+                },
+                body: JSON.stringify({
+                    model: "gpt-4o-mini",
+                    messages: [{ role: "user", content: prompt }]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById("response").innerHTML = "<b>Error:</b> " + data.error.message;
+                } else {
+                    document.getElementById("response").innerHTML = "Response received!";
+                    
+                    // Insert ChatGPT response into the editor
+                    editor.setValue(data.choices[0].message.content);
+                }
+            })
+            .catch(error => {
+                document.getElementById("response").innerHTML = "<b>Request failed:</b> " + error;
+            });
+        }
+    </script>
+</body>
+</html>
